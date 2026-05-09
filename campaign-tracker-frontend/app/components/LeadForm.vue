@@ -71,18 +71,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useLeadsStore } from '~/stores/leads'
+import { useCampaignsStore } from '~/stores/campaigns'
+import { useLocationsStore } from '~/stores/locations'
 import * as yup from 'yup'
 import { toast } from 'vue-sonner'
 import { leadSchema } from '~/validations/lead.schema'
-import { leadService } from '~/api/lead.service'
-import type { Campaign, Location } from '~/interfaces/lead.interface'
 
 const store = useLeadsStore()
+const campaignsStore = useCampaignsStore()
+const locationsStore = useLocationsStore()
 
-const campaigns = ref<Campaign[]>([])
-const cities = ref<Location[]>([])
+const campaigns = computed(() => campaignsStore.campaigns)
+const cities = computed(() => locationsStore.locations)
 
 const initialFormState = {
   full_name: '',
@@ -98,12 +100,10 @@ const loading = ref(false)
 
 onMounted(async () => {
   try {
-    const [campaignsData, citiesData] = await Promise.all([
-      leadService.getCampaigns(),
-      leadService.getLocations()
+    await Promise.all([
+      campaignsStore.fetchCampaigns(),
+      locationsStore.fetchLocations()
     ])
-    campaigns.value = campaignsData
-    cities.value = citiesData
   } catch (error) {
     toast.error('Failed to load campaigns and locations')
   }
