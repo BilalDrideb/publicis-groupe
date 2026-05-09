@@ -21,7 +21,7 @@ API REST para el registro y análisis de leads de campañas de marketing.
 
 ## 📁 Estructura del proyecto
 
-```
+```text
 back-end/
 ├── environment/
 │   ├── .env                  ← variables de entorno (no commitear)
@@ -46,6 +46,7 @@ back-end/
 │   │       └── lead.service.js      ← lógica de negocio
 │   ├── server.js             ← factory de la app Express
 ├── main.js                   ← punto de entrada, sync DB + start server
+├── seed.js                   ← script para poblar la base de datos con datos de prueba
 ├── package.json
 └── README.md
 ```
@@ -54,26 +55,31 @@ back-end/
 
 ## 🚀 Instalación y ejecución
 
-### 1. Clonar el repositorio
+### 1. Instalar dependencias
 
 ```bash
-git clone <repo-url>
-cd back-end
-```
-
-### 2. Instalar dependencias
-
-```bash
+cd campaign-tracker-backend
 npm install
 ```
 
-### 3. Configurar variables de entorno
+### 2. Configurar variables de entorno
+
+Copia el archivo de ejemplo para crear tus variables de entorno locales:
 
 ```bash
 cp environment/.env.example environment/.env
 ```
 
-Editar `environment/.env` si es necesario (por defecto usa SQLite en puerto 3001).
+Editar `environment/.env` si es necesario (por defecto usa SQLite y arranca en el puerto 3001).
+
+### 3. Poblar la Base de Datos (Seeding)
+
+Para crear automáticamente localizaciones, campañas y leads de prueba, ejecuta el siguiente script:
+
+```bash
+node seed.js
+```
+*Nota: Este script sincronizará las tablas y poblará la base de datos con información inicial.*
 
 ### 4. Ejecutar en desarrollo
 
@@ -81,7 +87,7 @@ Editar `environment/.env` si es necesario (por defecto usa SQLite en puerto 3001
 npm run dev
 ```
 
-El servidor arrancará en `http://localhost:3001` y sincronizará la base de datos automáticamente.
+El servidor arrancará en `http://localhost:3001` y sincronizará la base de datos automáticamente (usando nodemon para reiniciar ante cambios).
 
 ### 5. Ejecutar en producción
 
@@ -91,85 +97,28 @@ npm start
 
 ---
 
-## 📡 Endpoints
+## 📡 Endpoints Principales
 
-### `POST /leads`
-Registra un nuevo lead.
+### `POST /api/leads`
+Registra un nuevo lead. Requiere `full_name`, `email`, `birth_date`, `location_id`, y `campaign_id`.
 
-**Body (JSON):**
-```json
-{
-  "full_name": "Ana García",
-  "email": "ana.garcia@example.com",
-  "birth_date": "1995-06-15",
-  "location_id": 1,
-  "campaign_id": 1
-}
-```
+### `GET /api/leads/reports/leads-by-city`
+Devuelve el total de leads por ciudad, ordenado de mayor a menor.
 
-**Respuesta exitosa `201`:**
-```json
-{
-  "data": {
-    "id": 1,
-    "full_name": "Ana García",
-    "email": "ana.garcia@example.com",
-    "birth_date": "1995-06-15",
-    "location_id": 1,
-    "campaign_id": 1,
-    "createdAt": "2024-05-09T11:00:00.000Z"
-  },
-  "message": "Lead created successfully"
-}
-```
+### `GET /api/leads/reports/leads-by-campaign`
+Devuelve el total de leads por campaña, ordenado de mayor a menor.
 
-**Error de validación `400`:**
-```json
-{ "message": "birth_date must be in ISO format YYYY-MM-DD" }
-```
+### `GET /api/campaigns`
+Devuelve la lista de campañas disponibles.
 
-**Email duplicado `409`:**
-```json
-{ "message": "A lead with this email already exists" }
-```
-
----
-
-### `GET /leads/reports/leads-by-city`
-Total de leads por ciudad, ordenado de mayor a menor.
-
-**Respuesta `200`:**
-```json
-{
-  "data": [
-    { "city": "Madrid", "total_leads": 42 },
-    { "city": "Barcelona", "total_leads": 31 }
-  ],
-  "message": "success"
-}
-```
-
----
-
-### `GET /leads/reports/leads-by-campaign`
-Total de leads por campaña, ordenado de mayor a menor.
-
-**Respuesta `200`:**
-```json
-{
-  "data": [
-    { "campaign": "Summer 2024", "total_leads": 55 },
-    { "campaign": "Black Friday", "total_leads": 18 }
-  ],
-  "message": "success"
-}
-```
+### `GET /api/locations`
+Devuelve la lista de localizaciones disponibles.
 
 ---
 
 ## 🏗️ Arquitectura en capas
 
-```
+```text
 Request → Controller → Service → Repository → DB
                   ↑         ↑
                Zod       AppError
@@ -198,12 +147,5 @@ Request → Controller → Service → Repository → DB
 
 ## 🗄️ Base de datos
 
-Por defecto usa **SQLite** (archivo `campaign_tracker.sqlite` en la raíz del proyecto).  
+Por defecto usa **SQLite** (archivo `campaign_tracker.sqlite` en la raíz del proyecto).
 Para usar **PostgreSQL**, edita `src/config/database.js` siguiendo las instrucciones comentadas en el archivo y configura las variables en `.env`.
-
----
-
-## 📝 Notas de desarrollo
-
-- Las tablas se crean/actualizan automáticamente al arrancar (`sequelize.sync({ alter: true })`)
-- Para poblar la BD con datos de prueba, inserta manualmente registros en `locations` y `campaigns` antes de crear leads
