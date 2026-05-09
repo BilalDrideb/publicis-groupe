@@ -17,10 +17,10 @@ const createApp = () => {
   app.use(morgan('dev'));
 
   // Routes
-  app.use('/leads', leadRoutes);
+  app.use('/api/leads', leadRoutes);
 
   // Health check
-  app.get('/health', (_req, res) => res.json({ status: 'ok' }));
+  app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
 
   // 404 handler
   app.use((_req, res) => res.status(404).json({ message: 'Route not found' }));
