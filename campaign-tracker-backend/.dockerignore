@@ -1,0 +1,7 @@
+node_modules
+npm-debug.log
+.env
+campaign_tracker.sqlite
+.git
+.gitignore
+README.md

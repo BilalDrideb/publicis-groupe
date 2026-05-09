@@ -95,6 +95,22 @@ El servidor arrancará en `http://localhost:3001` y sincronizará la base de dat
 npm start
 ```
 
+### 6. Ejecutar con Docker
+
+Si prefieres usar Docker, asegúrate de tenerlo instalado y ejecuta los siguientes comandos desde la carpeta raíz del backend:
+
+**1. Construir la imagen:**
+```bash
+docker build -t campaign-tracker-backend .
+```
+
+**2. Levantar el contenedor:**
+```bash
+docker run -p 3001:3001 --name campaign-tracker-backend campaign-tracker-backend
+```
+
+*(La base de datos SQLite se creará dentro del contenedor, por lo que debes ejecutar `node seed.js` dentro del mismo o configurar un volumen si necesitas persistencia avanzada).*
+
 ---
 
 ## 📡 Endpoints Principales
