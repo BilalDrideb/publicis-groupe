@@ -6,5 +6,10 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss'
   ],
-  css: ['vue-sonner/style.css']
+  css: ['vue-sonner/style.css'],
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: '' // can be overridden by NUXT_PUBLIC_API_BASE_URL
+    }
+  }
 })
