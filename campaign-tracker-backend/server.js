@@ -1,19 +1,23 @@
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import rateLimit from 'express-rate-limit';
 
 import corsMiddleware from './src/middlewares/cors.js';
 import leadRoutes from './src/modules/leads/lead.routes.js';
 import campaignRoutes from './src/modules/campaigns/campaign.routes.js';
 import locationRoutes from './src/modules/locations/location.routes.js';
 import { errorHandler } from './src/middlewares/errorHandler.js';
+import limiter from './src/middlewares/limiter.js';
 
 const createApp = () => {
   const app = express();
 
+
   // Middlewares
   app.use(helmet());
   app.use(corsMiddleware);
+  app.use(limiter);
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(morgan('dev'));
