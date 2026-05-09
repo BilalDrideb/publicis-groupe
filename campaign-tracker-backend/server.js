@@ -1,7 +1,6 @@
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import rateLimit from 'express-rate-limit';
 
 import corsMiddleware from './src/middlewares/cors.js';
 import leadRoutes from './src/modules/leads/lead.routes.js';
