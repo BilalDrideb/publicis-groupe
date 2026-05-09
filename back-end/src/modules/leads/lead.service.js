@@ -16,6 +16,18 @@ export const createLead = async (payload) => {
     throw new AppError('A lead with this email already exists', 409);
   }
 
+  // Verify Location existence
+  const location = await repository.findLocationById(sanitized.location_id);
+  if (!location) {
+    throw new AppError('The selected location does not exist', 404);
+  }
+
+  // Verify Campaign existence
+  const campaign = await repository.findCampaignById(sanitized.campaign_id);
+  if (!campaign) {
+    throw new AppError('The selected campaign does not exist', 404);
+  }
+
   const lead = await repository.create(sanitized);
   return lead;
 };

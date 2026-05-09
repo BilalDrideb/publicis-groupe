@@ -11,6 +11,14 @@ export const findByEmail = async (email) => {
   return Lead.findOne({ where: { email } });
 };
 
+export const findLocationById = async (id) => {
+  return Location.findByPk(id);
+};
+
+export const findCampaignById = async (id) => {
+  return Campaign.findByPk(id);
+};
+
 export const countByCity = async () => {
   return Lead.findAll({
     attributes: [
