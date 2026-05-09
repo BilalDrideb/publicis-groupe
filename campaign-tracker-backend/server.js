@@ -4,6 +4,8 @@ import morgan from 'morgan';
 
 import corsMiddleware from './src/middlewares/cors.js';
 import leadRoutes from './src/modules/leads/lead.routes.js';
+import campaignRoutes from './src/modules/campaigns/campaign.routes.js';
+import locationRoutes from './src/modules/locations/location.routes.js';
 import { errorHandler } from './src/middlewares/errorHandler.js';
 
 const createApp = () => {
@@ -18,6 +20,8 @@ const createApp = () => {
 
   // Routes
   app.use('/api/leads', leadRoutes);
+  app.use('/api/campaigns', campaignRoutes);
+  app.use('/api/locations', locationRoutes);
 
   // Health check
   app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
