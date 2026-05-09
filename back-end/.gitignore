@@ -2,10 +2,20 @@
 node_modules/
 
 # Variables de entorno
-.env
+environment/.env
+
+# Base de datos SQLite (generada en runtime)
+*.sqlite
+*.sqlite3
+*.db
 
 # Logs
 *.log
+npm-debug.log*
 
 # VSCode
 .vscode/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
