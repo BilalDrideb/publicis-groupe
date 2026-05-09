@@ -1,12 +1,28 @@
 {
-  "name": "back-end",
+  "name": "campaign-tracker-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "description": "The Campaign Tracker – Backend API",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node main.js",
+    "dev": "nodemon main.js",
+    "seed": "node seed.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
 }
