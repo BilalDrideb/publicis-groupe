@@ -4,7 +4,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@pinia/nuxt',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    '@nuxt/eslint'
   ],
   css: ['vue-sonner/style.css'],
   runtimeConfig: {
